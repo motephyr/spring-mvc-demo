@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+           
+    <!-- 錯誤處理 未確認加進connectionFactory
+    <bean id="jmsExceptionListener" class="com.nextun.jms.test.JmsExceptionListener">
+    </bean>
+    <property name="exceptionListener" ref="jmsExceptionListener" />  
+    -->
+    
+    <!-- 連線用 -->
+    <bean id="connectionFactoryActiveMq" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL">
+            <value>tcp://127.0.0.1:61616?wireFormat.maxInactivityDuration=0</value>
+        </property>
+    </bean>
+ 
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory">
+            <ref bean="connectionFactoryActiveMq"/>
+        </property>
+    </bean>
+ 
+    <!-- 訊息格式 -->
+    <bean id="mobileNoticedestinations" class="org.apache.activemq.command.ActiveMQTopic">
+        <constructor-arg index="0" value="MobileNoticeDestination" />
+    </bean>
+    
+    <!-- 監聽 -->
+    <bean id="queueListener" class="com.nextun.jms.JmsListener">
+    </bean>
+    
+    <!-- container -->
+    <bean id="javaConsumer"
+        class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="connectionFactoryActiveMq" />
+        <property name="destination" ref="mobileNoticedestinations" />
+        <property name="messageListener" ref="queueListener" />
+    </bean>
+    
+    <!-- 發送者 -->
+     <bean id="jmsService" class="com.nextun.jms.JmsService">
+        <property name="jmsTemplate" ref="jmsTemplate"/>
+        <property name="destinations" ref="mobileNoticedestinations" />
+    </bean>
+           
+</beans>

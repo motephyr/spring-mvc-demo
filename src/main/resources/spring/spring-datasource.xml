@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans 
+  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <bean id="sqlDataSource" class="com.jolbox.bonecp.BoneCPDataSource"
+    destroy-method="close">
+    <!-- jdbc config -->
+    <property name="driverClass">
+      <value>${jdbc.driverClass}</value>
+    </property>
+    <property name="jdbcUrl">
+      <value>${jdbc.driverUrl}</value>
+    </property>
+    <property name="username">
+      <value>${jdbc.userName}</value>
+    </property>
+    <property name="password">
+      <value>${jdbc.userPassword}</value>
+    </property>
+
+    <!-- bonecp config -->
+    <property name="idleMaxAgeInMinutes">
+      <value>${bonecp.idleMaxAgeInMinutes}</value>
+    </property>
+    <property name="maxConnectionsPerPartition">
+      <value>${bonecp.maxConnectionsPerPartition}</value>
+    </property>
+    <property name="minConnectionsPerPartition">
+      <value>${bonecp.minConnectionsPerPartition}</value>
+    </property>
+    <property name="releaseHelperThreads">
+      <value>${bonecp.releaseHelperThreads}</value>
+    </property>
+    <property name="idleConnectionTestPeriodInMinutes">
+      <value>${bonecp.idleConnectionTestPeriodInMinutes}</value>
+    </property>
+    <property name="acquireIncrement">
+      <value>${bonecp.acquireIncrement}</value>
+    </property>
+    <property name="partitionCount">
+      <value>${bonecp.partitionCount}</value>
+    </property>
+    <property name="statementsCacheSize">
+      <value>${bonecp.statementsCacheSize}</value>
+    </property>
+  </bean>
+</beans>
